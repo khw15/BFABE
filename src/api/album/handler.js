@@ -30,7 +30,7 @@ class AlbumHandler {
 
     const response = h.response({
       status: 'error',
-      message: 'Maaf, terjadi kegagalan pada server kami.',
+      message: 'Sorry, there was a server error.',
     });
     response.code(500);
     console.error(error);
@@ -39,23 +39,31 @@ class AlbumHandler {
 
   async postAlbumHandler(req, h) {
     return this.handleRequestWithErrorHandling(async (req, h) => {
-      this._validator.validateAlbumPayload(req.payload);
-      const {name, year} = req.payload;
+      try {
+        this._validator.validateAlbumPayload(req.payload);
+        const {name, year} = req.payload;
+        const albumId = await this._service.addAlbum({
+          name,
+          year,
+        });
 
-      const albumId = await this._service.addAlbum({
-        name,
-        year,
-      });
-
-      const response = h.response({
-        status: 'success',
-        message: 'Lagu berhasil ditambahkan',
-        data: {
-          albumId,
-        },
-      });
-      response.code(201);
-      return response;
+        const response = h.response({
+          status: 'success',
+          message: 'Album successfully added',
+          data: {
+            albumId,
+          },
+        });
+        response.code(201);
+        return response;
+      } catch (error) {
+        // Handle the error and return an appropriate error response
+        return {
+          status: 'error',
+          message: 'Failed to add album',
+          error: error.message,
+        };
+      }
     }, req, h);
   }
 
@@ -80,7 +88,7 @@ class AlbumHandler {
       await this._service.updateAlbumById(id, req.payload);
       return {
         status: 'success',
-        message: 'Album berhasil diperbarui',
+        message: 'Album successfully updated',
       };
     }, req, h);
   }
@@ -91,7 +99,7 @@ class AlbumHandler {
       await this._service.deleteAlbumById(id);
       return {
         status: 'success',
-        message: 'Album berhasil dihapus',
+        message: 'Album successfully deleted',
       };
     }, req, h);
   }
