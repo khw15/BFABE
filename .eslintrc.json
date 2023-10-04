@@ -11,6 +11,7 @@
     },
     "rules": {
         "require-jsdoc": "off",
-        "camelcase": "off"
+        "camelcase": "off",
+        "linebreak-style": "off"
     }
 }

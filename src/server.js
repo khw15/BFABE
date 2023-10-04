@@ -25,7 +25,7 @@ async function initServer() {
     host: process.env.HOST,
     routes: {
       cors: {
-        origin: ['*'], // Allow requests from any origin (update as needed)
+        origin: ['*'], // Allow requests from any origin
       },
     },
   });
