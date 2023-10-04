@@ -39,31 +39,23 @@ class AlbumHandler {
 
   async postAlbumHandler(req, h) {
     return this.handleRequestWithErrorHandling(async (req, h) => {
-      try {
-        this._validator.validateAlbumPayload(req.payload);
-        const {name, year} = req.payload;
-        const albumId = await this._service.addAlbum({
-          name,
-          year,
-        });
+      this._validator.validateAlbumPayload(req.payload);
+      const {name, year} = req.payload;
 
-        const response = h.response({
-          status: 'success',
-          message: 'Album successfully added',
-          data: {
-            albumId,
-          },
-        });
-        response.code(201);
-        return response;
-      } catch (error) {
-        // Handle the error and return an appropriate error response
-        return {
-          status: 'error',
-          message: 'Failed to add album',
-          error: error.message,
-        };
-      }
+      const albumId = await this._service.addAlbum({
+        name,
+        year,
+      });
+
+      const response = h.response({
+        status: 'success',
+        message: 'Album successfully added',
+        data: {
+          albumId,
+        },
+      });
+      response.code(201);
+      return response;
     }, req, h);
   }
 
