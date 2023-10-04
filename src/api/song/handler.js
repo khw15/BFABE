@@ -9,44 +9,76 @@ class SongHandler {
     autoBind(this);
   }
 
-  handleResponse(h, status, message, data = null, statusCode = 500) {
-    const response = h.response({
-      status,
-      message,
-      data,
-    });
-    response.code(statusCode);
-    return response;
-  }
-
   async postSongHandler(req, h) {
     try {
       this._validator.validateSongPayload(req.payload);
       const { title, year, genre, performer, duration, albumId } = req.payload;
-      const songId = await this._service.addSong({ title, year, genre, performer, duration, albumId });
 
-      return this.handleResponse(h, "success", "Lagu berhasil ditambahkan", { songId }, 201);
+      const songId = await this._service.addSong({
+        title,
+        year,
+        genre,
+        performer,
+        duration,
+        albumId,
+      });
+
+      const response = h.response({
+        status: "success",
+        message: "Lagu berhasil ditambahkan",
+        data: {
+          songId,
+        },
+      });
+      response.code(201);
+      return response;
     } catch (error) {
       if (error instanceof ClientError) {
-        return this.handleResponse(h, "fail", error.message, null, error.statusCode);
+        const response = h.response({
+          status: "fail",
+          message: error.message,
+        });
+        response.code(error.statusCode);
+        return response;
       }
 
+      const response = h.response({
+        status: "error",
+        message: "Maaf, terjadi kegagalan pada server kami.",
+      });
+      response.code(500);
       console.error(error);
-      return this.handleResponse(h, "error", "Maaf, terjadi kegagalan pada server kami.");
+      return response;
     }
   }
 
   async getSongsHandler(req, h) {
     try {
       const songs = await this._service.getSongs();
-      return this.handleResponse(h, "success", null, { songs });
+
+      return {
+        status: "success",
+        data: {
+          songs,
+        },
+      };
     } catch (error) {
       if (error instanceof ClientError) {
-        return this.handleResponse(h, "fail", error.message, null, error.statusCode);
+        const response = h.response({
+          status: "fail",
+          message: error.message,
+        });
+        response.code(error.statusCode);
+        return response;
       }
 
+      const response = h.response({
+        status: "error",
+        message: "Maaf, terjadi kegagalan pada server kami.",
+      });
+      response.code(500);
       console.error(error);
-      return this.handleResponse(h, "error", "Maaf, terjadi kegagalan pada server kami.");
+      return response;
     }
   }
 
@@ -54,14 +86,29 @@ class SongHandler {
     try {
       const { id } = req.params;
       const song = await this._service.getSongById(id);
-      return this.handleResponse(h, "success", null, { song });
+      return {
+        status: "success",
+        data: {
+          song,
+        },
+      };
     } catch (error) {
       if (error instanceof ClientError) {
-        return this.handleResponse(h, "fail", error.message, null, error.statusCode);
+        const response = h.response({
+          status: "fail",
+          message: error.message,
+        });
+        response.code(error.statusCode);
+        return response;
       }
 
+      const response = h.response({
+        status: "error",
+        message: "Maaf, terjadi kegagalan pada server kami.",
+      });
+      response.code(500);
       console.error(error);
-      return this.handleResponse(h, "error", "Maaf, terjadi kegagalan pada server kami.");
+      return response;
     }
   }
 
@@ -69,32 +116,59 @@ class SongHandler {
     try {
       this._validator.validateSongPayload(req.payload);
       const { id } = req.params;
+
       await this._service.updateSongById(id, req.payload);
 
-      return this.handleResponse(h, "success", "Lagu berhasil diperbarui");
+      return {
+        status: "success",
+        message: "Lagu berhasil diperbarui",
+      };
     } catch (error) {
       if (error instanceof ClientError) {
-        return this.handleResponse(h, "fail", error.message, null, error.statusCode);
+        const response = h.response({
+          status: "fail",
+          message: error.message,
+        });
+        response.code(error.statusCode);
+        return response;
       }
 
+      const response = h.response({
+        status: "error",
+        message: "Maaf, terjadi kegagalan pada server kami.",
+      });
+      response.code(500);
       console.error(error);
-      return this.handleResponse(h, "error", "Maaf, terjadi kegagalan pada server kami.");
+      return response;
     }
   }
 
   async deleteSongByIdHandler(req, h) {
     try {
       const { id } = req.params;
-      await this._service.deleteSongById(id);
 
-      return this.handleResponse(h, "success", "Lagu berhasil dihapus");
+      await this._service.deleteSongById(id);
+      return {
+        status: "success",
+        message: "Lagu berhasil dihapus",
+      };
     } catch (error) {
       if (error instanceof ClientError) {
-        return this.handleResponse(h, "fail", error.message, null, error.statusCode);
+        const response = h.response({
+          status: "fail",
+          message: error.message,
+        });
+        response.code(error.statusCode);
+        return response;
       }
 
+      const response = h.response({
+        status: "error",
+        message: "Maaf, terjadi kegagalan pada server kami.",
+      });
+      response.code(500);
       console.error(error);
-      return this.handleResponse(h, "error", "Maaf, terjadi kegagalan pada server kami.");
+      return response;
     }
   }
 }
