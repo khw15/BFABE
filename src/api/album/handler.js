@@ -60,7 +60,7 @@ class AlbumHandler {
   }
 
   async getAlbumByIdHandler(req, h) {
-    return this.handleRequestWithErrorHandling(async (req, h) => {
+    return this.handleRequestWithErrorHandling(async (req, _h) => {
       const {id} = req.params;
       const album = await this._service.getAlbumById(id);
       return {
@@ -73,7 +73,7 @@ class AlbumHandler {
   }
 
   async updateAlbumByIdHandler(req, h) {
-    return this.handleRequestWithErrorHandling(async (req, h) => {
+    return this.handleRequestWithErrorHandling(async (req, _h) => {
       this._validator.validateAlbumPayload(req.payload);
       const {id} = req.params;
 
@@ -86,7 +86,7 @@ class AlbumHandler {
   }
 
   async deleteAlbumByIdHandler(req, h) {
-    return this.handleRequestWithErrorHandling(async (req, h) => {
+    return this.handleRequestWithErrorHandling(async (req, _h) => {
       const {id} = req.params;
       await this._service.deleteAlbumById(id);
       return {
