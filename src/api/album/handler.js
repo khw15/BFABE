@@ -1,5 +1,5 @@
-const autoBind = require("auto-bind");
-const ClientError = require("../../exceptions/ClientError");
+const autoBind = require('auto-bind');
+const ClientError = require('../../exceptions/ClientError');
 
 class AlbumHandler {
   constructor(service, validator) {
@@ -12,7 +12,7 @@ class AlbumHandler {
   async postAlbumHandler(req, h) {
     try {
       this._validator.validateAlbumPayload(req.payload);
-      const { name, year } = req.payload;
+      const {name, year} = req.payload;
 
       const albumId = await this._service.addAlbum({
         name,
@@ -20,8 +20,8 @@ class AlbumHandler {
       });
 
       const response = h.response({
-        status: "success",
-        message: "Lagu berhasil ditambahkan",
+        status: 'success',
+        message: 'Lagu berhasil ditambahkan',
         data: {
           albumId,
         },
@@ -31,7 +31,7 @@ class AlbumHandler {
     } catch (error) {
       if (error instanceof ClientError) {
         const response = h.response({
-          status: "fail",
+          status: 'fail',
           message: error.message,
         });
         response.code(error.statusCode);
@@ -39,8 +39,8 @@ class AlbumHandler {
       }
 
       const response = h.response({
-        status: "error",
-        message: "Maaf, terjadi kegagalan pada server kami.",
+        status: 'error',
+        message: 'Maaf, terjadi kegagalan pada server kami.',
       });
       response.code(500);
       console.error(error);
@@ -50,10 +50,10 @@ class AlbumHandler {
 
   async getAlbumByIdHandler(req, h) {
     try {
-      const { id } = req.params;
+      const {id} = req.params;
       const album = await this._service.getAlbumById(id);
       return {
-        status: "success",
+        status: 'success',
         data: {
           album,
         },
@@ -61,7 +61,7 @@ class AlbumHandler {
     } catch (error) {
       if (error instanceof ClientError) {
         const response = h.response({
-          status: "fail",
+          status: 'fail',
           message: error.message,
         });
         response.code(error.statusCode);
@@ -69,8 +69,8 @@ class AlbumHandler {
       }
 
       const response = h.response({
-        status: "error",
-        message: "Maaf, terjadi kegagalan pada server kami.",
+        status: 'error',
+        message: 'Maaf, terjadi kegagalan pada server kami.',
       });
       response.code(500);
       console.error(error);
@@ -81,17 +81,17 @@ class AlbumHandler {
   async updateAlbumByIdHandler(req, h) {
     try {
       this._validator.validateAlbumPayload(req.payload);
-      const { id } = req.params;
+      const {id} = req.params;
 
       await this._service.updateAlbumById(id, req.payload);
       return {
-        status: "success",
-        message: "Album berhasil perbarui",
+        status: 'success',
+        message: 'Album berhasil perbarui',
       };
     } catch (error) {
       if (error instanceof ClientError) {
         const response = h.response({
-          status: "fail",
+          status: 'fail',
           message: error.message,
         });
         response.code(error.statusCode);
@@ -99,8 +99,8 @@ class AlbumHandler {
       }
 
       const response = h.response({
-        status: "error",
-        message: "Maaf, terjadi kegagalan pada server kami.",
+        status: 'error',
+        message: 'Maaf, terjadi kegagalan pada server kami.',
       });
       response.code(500);
       console.error(error);
@@ -110,16 +110,16 @@ class AlbumHandler {
 
   async deleteAlbumByIdHandler(req, h) {
     try {
-      const { id } = req.params;
+      const {id} = req.params;
       await this._service.deleteAlbumById(id);
       return {
-        status: "success",
-        message: "Album berhasil dihapus",
+        status: 'success',
+        message: 'Album berhasil dihapus',
       };
     } catch (error) {
       if (error instanceof ClientError) {
         const response = h.response({
-          status: "fail",
+          status: 'fail',
           message: error.message,
         });
         response.code(error.statusCode);
@@ -127,8 +127,8 @@ class AlbumHandler {
       }
 
       const response = h.response({
-        status: "error",
-        message: "Maaf, terjadi kegagalan pada server kami.",
+        status: 'error',
+        message: 'Maaf, terjadi kegagalan pada server kami.',
       });
       response.code(500);
       console.error(error);

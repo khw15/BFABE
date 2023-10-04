@@ -6,4 +6,4 @@ const mapDbToModel = ({id, name, year, inserted_at, updated_at}) => ({
   updatedAt: updated_at,
 });
 
-module.exports = { mapDbToModel };
+module.exports = {mapDbToModel};
