@@ -3,7 +3,6 @@ const {nanoid} = require('nanoid');
 const {mapDbToModel} = require('../utils/song');
 const InvariantError = require('../exceptions/InvariantError');
 const NotFoundError = require('../exceptions/NotFoundError');
-// eslint-disable-next-line no-unused-vars
 const AuthorizationError = require('../exceptions/AuthorizationError');
 
 class SongService {
@@ -17,7 +16,6 @@ class SongService {
     const insertedAt = new Date().toISOString();
 
     const query = {
-      // eslint-disable-next-line max-len
       text: 'INSERT INTO songs VALUES($1, $2, $3, $4, $5, $6, $7, $8, $8) RETURNING id',
       values: [
         id,
@@ -40,7 +38,6 @@ class SongService {
   }
 
   async getSongs() {
-    // eslint-disable-next-line max-len
     const result = await this._pool.query('SELECT id, title, performer FROM songs');
     return result.rows;
   }
@@ -65,7 +62,6 @@ class SongService {
   ) {
     const updatedAt = new Date().toISOString();
     const query = {
-      // eslint-disable-next-line max-len
       text: 'UPDATE songs SET title=$1, year=$2, genre=$3, performer=$4, duration=$5, "albumId"=$6, updated_at=$7 WHERE id=$8 RETURNING id',
       values: [title, year, genre, performer, duration, albumId, updatedAt, id],
     };
