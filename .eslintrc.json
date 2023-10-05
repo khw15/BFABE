@@ -10,8 +10,9 @@
         "sourceType": "module"
     },
     "rules": {
-        "require-jsdoc": "off",
-        "camelcase": "off",
-        "linebreak-style": "off"
+        "require-jsdoc": "warn",
+        "camelcase": "warn",
+        "linebreak-style": "warn",
+        "max-len": "warn"
     }
 }
